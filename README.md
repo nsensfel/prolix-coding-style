@@ -67,7 +67,7 @@ Regroup import statement by library (the more general the library, the higher
 it should be) leaving an empty line to separate each group. The elements of a
 group should be sorted alphabetically.
 
-Export statements should be by function
+Export statements should be grouped logically (FIXME: still too vague).
 
 ## Blocks
 Blocks are list of elements within braces, brackets, chevrons, parentheses, or
@@ -84,16 +84,14 @@ In order to specify some exceptions:
 
 A block has its opening punctuation and closing punctuation on the same column,
 unless this block is not an *instruction block* and it fits on a single *code
-line*.
-If the block is on multiple lines, the closing punctuation does not share its
-line with anything else.
-If the block is on multiple and the language uses infix notations, the opening
-punctuation does not share its line with anything else.
-If the block is on multiple and the language uses prefix notations, the opening
-punctuation is immediately followed by the prefix operator and nothing else
-is present on that line.
-If the block is on multiple lines, the indentation level is incremented past the
-opening punctuation and decremented for the closing punctuation.
+line*.  If the block is on multiple lines, the closing punctuation does not
+share its line with anything else.  If the block is on multiple lines and the
+language uses infix notations, the opening punctuation does not share its line
+with anything else.  If the block is on multiple lines and the language uses
+prefix notations, the opening punctuation is immediately followed by the prefix
+operator and nothing else is present on that line.  If the block is on multiple
+lines, the indentation level is incremented past the opening punctuation and
+decremented for the closing punctuation.
 
 With the exception of *instruction blocks*, lists of elements with a single
 value may omit the punctuation pairs if the language permits it.
@@ -113,7 +111,7 @@ Note:
 * The pre and post operations of a `for` are not considered to be *instruction
   blocks*.
 * An acceptable exception to these rules is considering `else if` as a single
-  keyword, thus not requering the `if` to be a separate block from the `else`.
+  keyword, thus not requiring the `if` to be a separate block from the `else`.
 * Another exception is the `switch` structure: first level labels within it
   each define an *instruction block* through indentation.
 * The rules in this section do in fact specify that non-unary infix operators
