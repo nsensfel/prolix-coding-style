@@ -67,8 +67,6 @@ Regroup import statement by library (the more general the library, the higher
 it should be) leaving an empty line to separate each group. The elements of a
 group should be sorted alphabetically.
 
-Export statements should be grouped logically (FIXME: still too vague).
-
 ## Blocks
 Blocks are list of elements within braces, brackets, chevrons, parentheses, or
 other punctuation pairs of this kind. These punctuation pairs have to be
@@ -83,9 +81,10 @@ In order to specify some exceptions:
   returned valued is not being used.
 
 A block has its opening punctuation and closing punctuation on the same column,
-unless this block is not an *instruction block* and it fits on a single *code
-line*.  If the block is on multiple lines, the closing punctuation does not
-share its line with anything else.  If the block is on multiple lines and the
+unless this block is **not** an *instruction block* and both it and whatever
+keywords are part of the construct fit on a single *code line*.
+If the block is on multiple lines, the closing punctuation does not
+share its line with anything else. If the block is on multiple lines and the
 language uses infix notations, the opening punctuation does not share its line
 with anything else.  If the block is on multiple lines and the language uses
 prefix notations, the opening punctuation is immediately followed by the prefix
@@ -108,6 +107,7 @@ Nothing can go under the current indentation level except for the block's
 closing punctuation. Thus, things like labels and comments are indented.
 
 Note:
+* Commas are attached to the block that precedes them.
 * The pre and post operations of a `for` are not considered to be *instruction
   blocks*.
 * An acceptable exception to these rules is considering `else if` as a single
