@@ -23,6 +23,12 @@ consistent thorough the project.
 * Name: Do not feel constrained by any length limit when naming something.
 * Function: isolate logical blocks into separate functions whenever possible.
 
+## Naming conventions
+As a general rule, use very descriptive name. Think *anti-assembly*: long,
+self-explaining names are preferred to short, confusing names.
+
+Generally, names are in lowercase and use underscores to separate words.
+
 ## Blocks
 Blocks are list of elements within braces, brackets, chevrons, parentheses, or
 other punctuation pairs of this kind. These punctuation pairs have to be present
@@ -31,7 +37,7 @@ punctuation pairs, with some exceptions here and there.
 
 In order to specify some exceptions:
 * **Qualifying blocks:** blocks that qualify an element (e.g. index in an array,
-  class parameter).
+  class parameters, function call parameter lists).
 * **Instruction blocks:** blocks that contain sequences of instructions whose
   returned valued is not being used.
 
@@ -45,6 +51,18 @@ punctuation does not share its line with anything else.
 If the block is on multiple and the language uses prefix notations, the opening
 punctuation is immediately followed by the prefix operator and nothing else
 is present on that line.
+
+With the exception of *instruction blocks*, lists of elements with a single
+value may omit the punctuation pairs if the language permits it.
+
+With the exception of *qualifying blocks*, if a block shares its line with
+other things, a space separates it from whatever other elements are on the
+line. This space is not present for unary operators.
+
+Blocks cannot contain different non-unary operations. Thus, to chain different
+non-unary operations, sub-blocks have to be created. This makes it impossible to
+rely on operator priority for non-unary operations.
+
 
 ```c
 if (short_exit_condition())
