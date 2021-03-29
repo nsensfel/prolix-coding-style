@@ -151,6 +151,14 @@ OP
 G2
 ```
 
+Note that if the entire sequence cannot fit in the *code line*, there cannot be
+more than one instance of `OP` for that sequence on the same line. This would
+thus be forbidden:
+```
+G0 OP G1
+OP G2
+```
+
 ## Logical separations in instruction blocks
 If the language allows separate declaration and definition (e.g. C, Java, but
 not C++), declare (without defining) all variables at the start of the function.
