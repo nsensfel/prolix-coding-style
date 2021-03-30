@@ -401,6 +401,8 @@ function_call
    symbol on the same column.
  * *Separators* are directly next to the end of the *group* that precedes them.
  * *Groups* defined over multiple lines have explicit *delimiters*.
+ * The only thing allowed to share a line with the *delimiter* of a multi-line
+   *group* is a *separator* (and the identation).
 
 Note:
 * Cases of `switch` structures are exempt from having to use explicit
@@ -454,8 +456,6 @@ group should be sorted alphabetically.
 
 
 Note:
-* An acceptable exception to these rules is considering `else if` as a single
-  keyword, thus not requiring the `if` to be a separate block from the `else`.
 * The rules in this section do in fact specify that non-unary infix operators
   are not attached to their arguments and there is thus a either a space or a
   newline.
@@ -473,3 +473,12 @@ forbids declaring pointers and non-pointers on the same line).
 
 Separate declarations, assignments, function call, and loop/conditional/jump
 structures with an empty line.
+
+#### 2.15 Indentation Exceptions
+* If the left side of an assignment cannot fit in the line, it goes to a new
+  line and creates its own incremented indentation level before the *group*
+  becomes a multi-line one. If the *group* can fit in that new line, the *group*
+  does not become a multi-line *group*.
+* The same rule as above applies to the argument of a `return` statement.
+* `else if` is considered to be a single keyword and is thus exempts from the
+  need to have an `else { if [...] }` construct.
