@@ -20,16 +20,16 @@ or by *operators*.
 
 **Example:**
 ```c
-if (fun_a(param_a, param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a, param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
 ```
 The *groups* in the code above are:
-* `(fun_a(param_a, param_b) && ~fun_b(paramc) && fun_c())`
+* `(fun_a(param_a, param_b) && ~fun_b(param_c) && fun_c())`
 * `fun_a(param_a, param_b)`
-* `~fun_b(paramc)`
-* `fun_b(paramc)`
+* `~fun_b(param_c)`
+* `fun_b(param_c)`
 * `fun_c()`
 * `fun_a`
 * `fun_b`
@@ -50,7 +50,7 @@ semantics.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -70,7 +70,7 @@ An *instruction group* is a *group* that returns no value.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -78,13 +78,18 @@ if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
 The only *instruction group* in the code above is:
 * `{ do_something(); }`
 
+Notes:
+* The pre and post components of a `for` are not considered to be *instruction
+  groups*.
+* Cases of a `switch` each form their own *instruction block*.
+
 #### 1.3. Separator
 A *separator* is a symbol that is put in between *groups* yet does not merge
 the groups it separates.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -99,7 +104,7 @@ languages in order to merge them into a larger group.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -114,7 +119,7 @@ in order to affect their value.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b++], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b++], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -132,7 +137,7 @@ it closing.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
    do_something();
 }
@@ -337,7 +342,7 @@ if
    ][multi_line_is_contagious]
 )
 ```
-#### 2.8. Separators Spacing
+#### 2.9. Separators Spacing
  * *Separators* are directly next to the end of the group that precedes them but
    not directly next to the start of the group that follows them.
  * The *separators* of a *group* defined over multiple lines are never on the
@@ -389,14 +394,19 @@ function_call
 );
 ```
 
-#### 2.9. Delimiter Positioning
+#### 2.10. Delimiter Positioning
  * *Instruction group* *delimiters* have their opening and closing symbol on the
    same column.
  * *Groups* that are defined over multiple lines have their opening and closing
    symbol on the same column.
- * *Separators* are directly next to the end of the group that precedes them.
+ * *Separators* are directly next to the end of the *group* that precedes them.
+ * *Groups* defined over multiple lines have explicit *delimiters*.
 
-#### 2.10. Non-Unary Operators in Multi-line Groups
+Note:
+* Cases of `switch` structures are exempt from having to use explicit
+  *delimiters*.
+
+#### 2.11. Non-Unary Operators in Multi-line Groups
 * Operators of a *group* defined over multiple lines are placed at the start of
   the line, following the identation level. If the *group* that follows them can
   fit in the line that *group* shares the line with the operator.
@@ -424,7 +434,9 @@ function_call
 )
 ```
 
-## Argument order in functions
+#### 2.12. Argument Order
+`(WIP)`
+
 Arguments used to return results should be last when possible. The order of
 inputs should put the subject of modifications last. For example, adding a new
 element at a certain index to a set should be in the `elem, index, set` order.
@@ -433,64 +445,24 @@ If a function has to return more than one value and tuples are not available in
 the language, then use arguments instead, with the actual return value being
 either a success indicator or no return value at all.
 
-## Import/Export statements
+#### 2.13. Import/Export statements
+`(WIP)`
+
 Regroup import statement by library (the more general the library, the higher
 it should be) leaving an empty line to separate each group. The elements of a
 group should be sorted alphabetically.
 
 
 Note:
-* The pre and post operations of a `for` are not considered to be *instruction
-  blocks*.
 * An acceptable exception to these rules is considering `else if` as a single
   keyword, thus not requiring the `if` to be a separate block from the `else`.
-* Another exception is the `switch` structure: first level labels within it
-  each define an *instruction block* through indentation.
 * The rules in this section do in fact specify that non-unary infix operators
   are not attached to their arguments and there is thus a either a space or a
   newline.
 
-## Inline operator sequence
-Given `OP` and operator that returns a value, and `G{0..2}` groups that return
-values:
+#### 2.14. Logical separations in instruction blocks
+`(WIP)`
 
-* If the sequence fits in the *code line*:
-```
-G0 OP G1 OP G2
-```
-* If the sequence does not fit in the *code line*, but `OP G1` and `OP G2` do:
-```
-G0
-OP G1
-OP G2
-```
-* If the sequence does not fit in the *code line* and neither does `OP G2`, but
-`OP G1` does fit:
-```
-G0
-OP G1
-OP
-G2
-```
-
-* If none fit in the *code line*:
-```
-G0
-OP
-G1
-OP
-G2
-```
-
-Note that if the entire sequence cannot fit in the *code line*, there cannot be
-more than one instance of `OP` for that sequence on the same line. This would
-thus be forbidden:
-```
-G0 OP G1
-OP G2
-```
-
-## Logical separations in instruction blocks
 If the language allows separate declaration and definition (e.g. C, Java, but
 not C++), declare (without defining) all variables at the start of the function.
 
