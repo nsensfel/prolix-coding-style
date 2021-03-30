@@ -106,18 +106,19 @@ The *non-unary operators* in the code above are:
 * `&&`
 
 #### 1.5. Unary Operator
-An *operator* is a symbol that prefixes *groups* in infix languages in
-order to affect their value.
+An *operator* is a symbol that prefixes or suffixes *groups* in infix languages
+in order to affect their value.
 
 **Example:**
 ```c
-if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+if (fun_a(param_a[0][a + b++], param_b) && ~fun_b(paramc) && fun_c())
 {
    do_something();
 }
 ```
-The only *unary operator* in the code above is:
+The *unary operators* in the code above are:
 * `~`
+* `++`
 
 #### 1.6. Delimiters
 *Groups* have *delimiters*. These may be implicit or explicit. A *delimiter* is
@@ -137,6 +138,10 @@ The *delimiters* in the code above are:
 * `(` `)`
 * `[` `]`
 * `{` `}`
+
+#### 1.7. Spacing
+Are considered not next to each other to symbols separated by either a space,
+tab, or newline.
 
 ## 2. Coding Rules
 
@@ -165,11 +170,57 @@ applied:
   object either belongs to or inherits from, all type conversions must be made
   explicit.
 
-#### 2.3. Indentation Type
+#### 2.3. Indentation
 There is no rule about what constitutes a level of indentation, other than it
 should ensure a increment of column. Tabulation or spaces are both acceptable,
 as long as what constitutes a level of indentation is consistent thorough the
 project.
+
+The only way to change the indentation level is to enter a *group* definition or
+leave a *group* definition. These may at most change the indentation level by
+one, and have to decrease the indentation level on exit if they incremented it
+upon entering. *Groups* use a different indentation level if, and only if, they
+are defined over multiple lines. The *delimiters* of the *group* use the
+indentation level in place outside the *group*.
+
+Nothing can ignore the current indentation level.
+
+The inside of *groups* that are defined on a single line do not have
+indentation. The elements of a *group* that is defined over multiple line all
+have the same level of indentation.
+
+**Examples:**
+* The following is allowed:
+```c
+void some_function (int a, int b)
+{
+   some_other_function
+   (
+      some_other_function_with_a_particularly_long_name(),
+      a + b,
+      rand() + b
+   );
+}
+```
+* The following is **forbidden**:
+```c
+void some_function (int a, int b)
+{
+   some_other_function
+   (
+      some_other_function_with_a_particularly_long_name(),
+      a + b, rand() + b
+   );
+}
+```
+* The following is **forbidden**:
+```c
+void some_function (int a, int b)
+{
+   some_other_function(some_other_function_with_a_particularly_long_name(), a +
+      b, rand() + b);
+}
+```
 
 #### 2.4. Length Limits
 * **Code line:** Avoid going beyond the 79th column (i.e. 80 characters per line)
@@ -192,6 +243,40 @@ can their meaning or disappear without warning.
 If the language supports anonymous variables, these should be as descriptive as
 they can.
 
+#### 2.6. Operators Spacing
+* *Non-unary operators* are not directly next to *delimiters* or *groups*.
+* *unary operators* are directly next to *delimiters* or *groups*.
+**Examples:**
+* `a&&b` is **forbidden**.
+* `a && b` is allowed.
+* `a && ~b` is allowed.
+* `a && ~ b` is **forbidden**.
+
+#### 2.7. Operators and Groups
+* Using different *non-unary operators* to merge multiple *groups* is forbidden.
+
+**Examples:**
+* `a && b || c && d` is **forbidden**.
+* `(a[0] && b) || (c && d)` is allowed.
+* `(a && ~b) || ~(c && d[e + f])` is allowed.
+
+#### 2.8. Separators Spacing
+ * *Separators* are directly next to the end of the group that precedes them but
+   not directly next to the start of the group that follows them.
+
+**Examples:**
+* `fun(a , b , c)` is **forbidden**.
+* `fun(a ,b ,c)` is **forbidden**.
+* `fun(a, b, c)` is allowed.
+* `fun(a,b,c)` is **forbidden**.
+
+#### 2.9. Delimiter Positioning
+ * *Instruction group* *delimiters* have their opening and closing symbol on the
+   same column.
+ * *Groups* that are defined over multiple lines have their opening and closing
+   symbol on the same column.
+ * *Separators* are directly next to the end of the group that precedes them.
+
 ## Argument order in functions
 Arguments used to return results should be last when possible. The order of
 inputs should put the subject of modifications last. For example, adding a new
@@ -206,48 +291,8 @@ Regroup import statement by library (the more general the library, the higher
 it should be) leaving an empty line to separate each group. The elements of a
 group should be sorted alphabetically.
 
-## Blocks
-Blocks are list of elements within braces, brackets, chevrons, parentheses, or
-other punctuation pairs of this kind. These punctuation pairs have to be
-present even if the language allows their omission, unless the block
-semantically defined by its indentation level. Prolix uses the same rules for
-all punctuation pairs, with some exceptions here and there.
-
-In order to specify some exceptions:
-* **Qualifying blocks:** blocks that qualify an element (e.g. index in an array,
-  class parameters, function call parameter lists).
-* **Instruction blocks:** blocks that contain sequences of instructions whose
-  returned valued is not being used.
-
-A block has its opening punctuation and closing punctuation on the same column,
-unless this block is **not** an *instruction block* and both it and whatever
-keywords are part of the construct fit on a single *code line*.
-If the block is on multiple lines, the closing punctuation does not
-share its line with anything else. If the block is on multiple lines and the
-language uses infix notations, the opening punctuation does not share its line
-with anything else.  If the block is on multiple lines and the language uses
-prefix notations, the opening punctuation is immediately followed by the prefix
-operator and nothing else is present on that line.  If the block is on multiple
-lines, the indentation level is incremented past the opening punctuation and
-decremented for the closing punctuation.
-
-With the exception of *instruction blocks*, lists of elements with a single
-value may omit the punctuation pairs if the language permits it.
-
-With the exception of *qualifying blocks*, if a block shares its line with
-other things, a space separates it from whatever other elements are on the
-line. This space is not present for unary operators.
-
-Blocks cannot contain different non-unary operations. Thus, to chain different
-non-unary operations, sub-blocks have to be created. This makes it impossible to
-rely on operator priority for non-unary operations.
-
-Nothing can go under the current indentation level except for the block's
-closing punctuation. Thus, things like labels and comments are indented.
-
 
 Note:
-* Commas are attached to the block that precedes them.
 * The pre and post operations of a `for` are not considered to be *instruction
   blocks*.
 * An acceptable exception to these rules is considering `else if` as a single
