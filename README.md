@@ -151,6 +151,11 @@ The *delimiters* in the code above are:
 Are considered not next to each other to symbols separated by either a space,
 tab, or newline.
 
+#### 1.8. Member Access
+`(WIP)`
+
+*Member accesses* correspond to accessing [...]
+
 ## 2. Coding Rules
 
 #### 2.0. Code for Humans
@@ -493,6 +498,19 @@ when passing a constant literal to a function call.
 * Consider all warnings as errors.
 * In case of false positive, disable check for that particular instance, not
   for the whole compilation.
+
+#### 2.18. Member Accesses Spacing
+There is no spacing between a *member accesses* and its parent *group*.
+
+#### 2.19. Unary Operators Disambiguation
+* If a *group* has both a *unary operator* prefixing it and a *unary operator*
+  suffixing it, there is a risk of ambiguity. If the order in which the
+  operators are performed relies on a priority defined by the language
+  disambiguation through explicit group delimiters must be implemented.
+* If a prefix *unary operator* is applied to a *group* with a *member access*
+  and the order between *member access* and application of the *unary operator*
+  only depends on the priority defined by the language and not typing,
+  disambiguation through explicit group delimiters must be implemented.
 
 ### 3. Special Cases
 #### 3.0. Indentation Exceptions
