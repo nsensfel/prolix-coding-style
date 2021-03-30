@@ -62,7 +62,7 @@ namespace western
       std::cout << "RIP" << std::endl;
    }
 
-   void Cowboy::shoot (const std::string target_name)
+   void Cowboy::shoot ([[maybe_unused]] const std::string target_name)
    {
       age++;
 
