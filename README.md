@@ -4,7 +4,7 @@ A formalization of my preferred coding style.
 This way of coding should be compatible with pretty much any language, with
 Python being a notable exception.
 
-## Rationale
+## 0. Rationale
 As the name implies, the Prolix coding style is verbose. If code length is an
 issue for you, I would not recommend it.
 
@@ -12,8 +12,8 @@ Prolix makes it very easy to see what element belongs in what group. It also
 forbids reliance on implicit operator priority, making complex operations much
 easier to read.
 
-## Definitions
-### Groups
+## 1. Definitions
+### 1.0. Groups
 **Definition:**
 A *group* is a value or a list of *groups* potentially separated by *separators*
 or by *operators*.
@@ -44,7 +44,7 @@ The *groups* in the code above are:
 * `do_something()`
 * `do_something`
 
-#### Qualifying Groups
+#### 1.1. Qualifying Groups
 A *qualifying group* is a *group* that suffixes a *group* in order to modify its
 semantics.
 
@@ -62,7 +62,7 @@ The *qualifying groups* in the code above are:
 * `[0]`
 * `[a + b]`
 
-#### Instruction Groups
+#### 1.2. Instruction Groups
 An *instruction group* is a *group* that returns no value.
 
 **Example:**
@@ -75,7 +75,7 @@ if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
 The only *instruction group* in the code above is:
 * `{ do_something(); }`
 
-#### Separator
+#### 1.3. Separator
 A *separator* is a symbol that is put in between *groups* yet does not merge
 the groups it separates.
 
@@ -90,7 +90,7 @@ The *separators* in the code above are:
 * `,`
 * `;`
 
-#### Non-Unary Operator
+#### 1.4. Non-Unary Operator
 An *non-unary operator* is a symbol that is put in between *groups* in infix
 languages in order to merge them into a larger group.
 
@@ -105,7 +105,7 @@ The *non-unary operators* in the code above are:
 * `+`
 * `&&`
 
-#### Unary Operator
+#### 1.5. Unary Operator
 An *operator* is a symbol that prefixes *groups* in infix languages in
 order to affect their value.
 
@@ -119,20 +119,78 @@ if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
 The only *unary operator* in the code above is:
 * `~`
 
-## Type conversions
-Never use implicit conversions.
+#### 1.6. Delimiters
+*Groups* have *delimiters*. These may be implicit or explicit. A *delimiter* is
+a symbol that marks the start of the *group* or its end. *Delimiters* are
+considered to be part of the *group* they define. They usually come in pair,
+with a specific symbol to indicate the *group* starting and another indicating
+it closing.
 
-## Restriction
-Always use the most restrictive mode possible for arguments, even if this means
-indicating more modifiers.
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The *delimiters* in the code above are:
+* `(` `)`
+* `[` `]`
+* `{` `}`
 
-Generally, indicate the keywords corresponding to restrictions that match what
-is done with the variable, even if the code would work without them. Once this
-is done, you can assume any restriction being absent from something as an
-indication that this thing is used in a way that does not allow such a
-restriction. For example, in Java, every variable should be `final` unless it
-is modified.  Thus, upon seeing that a variable is not `final`, one should
-expect it is likely to be modified by something.
+## 2. Coding Rules
+
+#### 2.0. Code for Humans
+* When given a choice between a solution that is efficient and one that is
+  readable by a human, prefer the human readable one unless the need for
+  efficiency is critical.
+
+#### 2.1. Restricting Keywords
+* Always give as much information as possible, even when this makes the code
+  verbose.
+* Always use as much restricting keywords as possible.
+* Assume that if a restricting keyword is absent, that is because it could not
+  be added.
+
+For example, in Java, every variable should be `final` unless it is modified.
+Thus, upon seeing that a variable is not `final`, one should expect there is at
+least one possible execution that will lead to it being modified.
+ 
+#### 2.2. Type Conversions
+Most languages will automatically infer necessary type conversions. This is
+sometimes useful but often dangerous. In order to keep most of the useful
+conversions but to ensure dangerous ones are removed, the following rule is
+applied:
+* Unless the type conversion involves an object being cast to a class that this
+  object either belongs to or inherits from, all type conversions must be made
+  explicit.
+
+#### 2.3. Indentation Type
+There is no rule about what constitutes a level of indentation, other than it
+should ensure a increment of column. Tabulation or spaces are both acceptable,
+as long as what constitutes a level of indentation is consistent thorough the
+project.
+
+#### 2.4. Length Limits
+* **Code line:** Avoid going beyond the 79th column (i.e. 80 characters per line)
+  whenever possible.
+* **Name:** Do not feel constrained by any length limit when naming something.
+* **Function:** isolate logical blocks into separate functions whenever possible.
+
+#### 2.5. Naming Conventions
+As a general rule, use very descriptive name. Think *anti-assembly*: long,
+self-explaining names are preferred to short, confusing names.
+
+* **Class Names:** `[0-9A-Za-z]+`, with each word starting with a capital
+  letter.
+* **Constant Names:** `[0-9A-Z_]+`, with an underscore between words.
+* **Everything Else:** `[0-9a-z_]+`, with an underscore between words.
+
+Starting anything with an underscore indicates a hack. Those are instable and
+can their meaning or disappear without warning.
+
+If the language supports anonymous variables, these should be as descriptive as
+they can.
 
 ## Argument order in functions
 Arguments used to return results should be last when possible. The order of
@@ -142,32 +200,6 @@ element at a certain index to a set should be in the `elem, index, set` order.
 If a function has to return more than one value and tuples are not available in
 the language, then use arguments instead, with the actual return value being
 either a success indicator or no return value at all.
-
-## Indentation Type
-Prolix does not impose a particular type of indentation. Tabulation or space
-are both acceptable, as long as what constitutes a level of indentation is
-consistent thorough the project.
-
-## Length limits
-* Code line: Avoid going beyond the 79th column (i.e. 80 characters per line)
-  whenever possible.
-* Name: Do not feel constrained by any length limit when naming something.
-* Function: isolate logical blocks into separate functions whenever possible.
-
-## Naming conventions
-As a general rule, use very descriptive name. Think *anti-assembly*: long,
-self-explaining names are preferred to short, confusing names.
-
-Generally, names are in lowercase and use underscores to separate words.
-Constants use are in uppercase and underscores.
-In OOP languages, classes are named without underscores and use a capital
-letter for the first character of each word.
-
-Starting anything with an underscore generally indicate a hack and it should be
-expected that this thing may change its behavior or name without warning.
-
-If the language supports anonymous variables, these should be as descriptive as
-they can.
 
 ## Import/Export statements
 Regroup import statement by library (the more general the library, the higher
