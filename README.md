@@ -213,6 +213,7 @@ rely on operator priority for non-unary operations.
 Nothing can go under the current indentation level except for the block's
 closing punctuation. Thus, things like labels and comments are indented.
 
+
 Note:
 * Commas are attached to the block that precedes them.
 * The pre and post operations of a `for` are not considered to be *instruction
@@ -224,6 +225,46 @@ Note:
 * The rules in this section do in fact specify that non-unary infix operators
   are not attached to their arguments and there is thus a either a space or a
   newline.
+
+## Inline operator sequence
+Given `OP` and operator that returns a value, and `G{0..2}` groups that return
+values:
+
+* If the sequence fits in the *code line*:
+```
+G0 OP G1 OP G2
+```
+* If the sequence does not fit in the *code line*, but `OP G1` and `OP G2` do:
+```
+G0
+OP G1
+OP G2
+```
+* If the sequence does not fit in the *code line* and neither does `OP G2`, but
+`OP G1` does fit:
+```
+G0
+OP G1
+OP
+G2
+```
+
+* If none fit in the *code line*:
+```
+G0
+OP
+G1
+OP
+G2
+```
+
+Note that if the entire sequence cannot fit in the *code line*, there cannot be
+more than one instance of `OP` for that sequence on the same line. This would
+thus be forbidden:
+```
+G0 OP G1
+OP G2
+```
 
 ## Logical separations in instruction blocks
 If the language allows separate declaration and definition (e.g. C, Java, but
