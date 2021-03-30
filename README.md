@@ -258,17 +258,62 @@ they can.
 **Examples:**
 * `a && b || c && d` is **forbidden**.
 * `(a[0] && b) || (c && d)` is allowed.
+* `(a[0] && b) || (c && d) || a[1]` is allowed.
+* `(a[0] && b) || (c && d) && a[1]` is **forbidden**.
+* `(a[0] && b) || (c && d && a[1])` is allowed.
 * `(a && ~b) || ~(c && d[e + f])` is allowed.
 
 #### 2.8. Separators Spacing
  * *Separators* are directly next to the end of the group that precedes them but
    not directly next to the start of the group that follows them.
+ * The *separators* of a *group* defined over multiple lines are never on the
+   same line.
 
 **Examples:**
 * `fun(a , b , c)` is **forbidden**.
 * `fun(a ,b ,c)` is **forbidden**.
 * `fun(a, b, c)` is allowed.
 * `fun(a,b,c)` is **forbidden**.
+* The following is **forbidden**:
+```
+void my_fun ()
+{
+   fun_a(); fun_b();
+}
+```
+* The following is allowed:
+```
+void my_fun ()
+{
+   fun_a();
+   fun_b();
+}
+```
+* The following is **forbidden**:
+```
+function_call
+(
+   function_a, function_b,
+   90,         30
+);
+```
+* The following is **forbidden**:
+```
+function_call
+(
+   function_a, function_b, 90, 30
+);
+```
+* The following is allowed:
+```
+function_call
+(
+   function_a,
+   function_b,
+   90,
+   30
+);
+```
 
 #### 2.9. Delimiter Positioning
  * *Instruction group* *delimiters* have their opening and closing symbol on the
@@ -276,6 +321,34 @@ they can.
  * *Groups* that are defined over multiple lines have their opening and closing
    symbol on the same column.
  * *Separators* are directly next to the end of the group that precedes them.
+
+#### 2.10. Non-Unary Operators in Multi-line Groups
+* Operators of a *group* defined over multiple lines are placed at the start of
+  the line, following the identation level. If the *group* that follows them can
+  fit in the line that *group* shares the line with the operator.
+
+**Examples**:
+* The following is allowed:
+```c
+(
+   my_fun_a()
+   && my_fun_b(0, 1, 2, 3 + 4)
+   &&
+   my_fun_c
+   (
+      a_very_long_argument_in_order_to_reach_the_line_limit(0, false, 4),
+      some_other_argument
+   )
+   && (a || b || c)
+   &&
+   (
+      my_cond_1
+      || my_fairly_long_condition
+      ||
+      my_condition_with_an_ridiculously_long_name_that_keeps_on_going_and_going
+   )
+)
+```
 
 ## Argument order in functions
 Arguments used to return results should be last when possible. The order of
