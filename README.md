@@ -62,6 +62,9 @@ The *qualifying groups* in the code above are:
 * `[0]`
 * `[a + b]`
 
+Note: function call arguments are *qualifying groups*, function definition and
+declaration arguments are **not**.
+
 #### 1.2. Instruction Groups
 An *instruction group* is a *group* that returns no value.
 
@@ -189,6 +192,7 @@ The inside of *groups* that are defined on a single line do not have
 indentation. The elements of a *group* that is defined over multiple line all
 have the same level of indentation.
 
+The keywords that precede a group are 
 **Examples:**
 * The following is allowed:
 ```c
@@ -263,6 +267,76 @@ they can.
 * `(a[0] && b) || (c && d && a[1])` is allowed.
 * `(a && ~b) || ~(c && d[e + f])` is allowed.
 
+#### 2.8. Group Spacing
+Any *group* that is not a *qualifying group* has *spacing* between it and any
+keyword. If that *spacing* is a newline, the group is considered as being
+defined over multiple lines.
+
+*Qualifying groups* do not have *spacing* between them and the *group* they
+qualify, unless the *qualifying group* does not fit on the line, in which case
+they use a newline and become a multi-line *group*. *Qualifying
+group* of multi-line *groups* are themselves multi-line. *Groups* with
+multi-line *qualifying groups* themselves become multi-line *groups*.
+
+**Examples:**
+* `if(a)` is **forbidden**.
+* `if (a)` is allowed.
+* The following is **forbidden**:
+```c
+if
+(a_very_long_line_that_somehow && fits_only_if_the_if_keyword_is_absent_from_it)
+```
+* The following is allowed:
+```c
+if
+(
+   a_very_long_line_that_somehow
+   && fits_only_if_the_if_keyword_is_absent_from_it
+)
+```
+* The following is allowed:
+```c
+if
+(
+   an_array_with_an_very_long_name_yet_still_able_to_remain_on_one_line[0]
+   &&
+   an_array_with_a_smaller_name
+   [
+      yet_it_is_a_multiline_one
+      + because_its_qualifying_group_is_too_long
+   ]
+   [
+      multi_line_is_contagious
+   ]
+)
+```
+* The following is **forbidden**:
+```c
+if
+(
+   an_array_with_an_very_long_name_yet_still_able_to_remain_on_one_line[0]
+   &&
+   an_array_with_a_smaller_name
+   [
+      yet_it_is_a_multiline_one
+      + because_its_qualifying_group_is_too_long
+   ]
+   [multi_line_is_contagious]
+)
+```
+* The following is **forbidden**:
+```c
+if
+(
+   an_array_with_an_very_long_name_yet_still_able_to_remain_on_one_line[0]
+   &&
+   an_array_with_a_smaller_name
+   [
+      yet_it_is_a_multiline_one
+      + because_its_qualifying_group_is_too_long
+   ][multi_line_is_contagious]
+)
+```
 #### 2.8. Separators Spacing
  * *Separators* are directly next to the end of the group that precedes them but
    not directly next to the start of the group that follows them.
@@ -275,14 +349,14 @@ they can.
 * `fun(a, b, c)` is allowed.
 * `fun(a,b,c)` is **forbidden**.
 * The following is **forbidden**:
-```
+```c
 void my_fun ()
 {
    fun_a(); fun_b();
 }
 ```
 * The following is allowed:
-```
+```c
 void my_fun ()
 {
    fun_a();
@@ -290,7 +364,7 @@ void my_fun ()
 }
 ```
 * The following is **forbidden**:
-```
+```c
 function_call
 (
    function_a, function_b,
@@ -298,14 +372,14 @@ function_call
 );
 ```
 * The following is **forbidden**:
-```
+```c
 function_call
 (
    function_a, function_b, 90, 30
 );
 ```
 * The following is allowed:
-```
+```c
 function_call
 (
    function_a,
