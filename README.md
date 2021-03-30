@@ -158,6 +158,10 @@ tab, or newline.
   readable by a human, prefer the human readable one unless the need for
   efficiency is critical.
 
+* Don't rely on automated inference, specify what you expect to have so that
+  people don't have to think about what should happen. It'll also make software
+  able to tell you when you make wrong assumptions.
+
 #### 2.1. Restricting Keywords
 * Always give as much information as possible, even when this makes the code
   verbose.
@@ -474,7 +478,24 @@ forbids declaring pointers and non-pointers on the same line).
 Separate declarations, assignments, function call, and loop/conditional/jump
 structures with an empty line.
 
-#### 2.15 Indentation Exceptions
+#### 2.15. Compatibility
+The code should be written using ASCII characters. Non-ASCII characters outside
+of their use as a value or when commenting is forbidden.
+
+#### 2.16. Constant Literals
+Avoid unnamed constant literals (e.g. magic numbers) when possible.
+
+In order to help readability, specify the name of the argument using a comment
+when passing a constant literal to a function call.
+
+#### 2.17. Do not Ignore Warnings
+* Always compile with as much warnings enabled as possible.
+* Consider all warnings as errors.
+* In case of false positive, disable check for that particular instance, not
+  for the whole compilation.
+
+### 3. Special Cases
+#### 3.0. Indentation Exceptions
 * If the left side of an assignment cannot fit in the line, it goes to a new
   line and creates its own incremented indentation level before the *group*
   becomes a multi-line one. If the *group* can fit in that new line, the *group*
