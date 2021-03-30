@@ -12,6 +12,113 @@ Prolix makes it very easy to see what element belongs in what group. It also
 forbids reliance on implicit operator priority, making complex operations much
 easier to read.
 
+## Definitions
+### Groups
+**Definition:**
+A *group* is a value or a list of *groups* potentially separated by *separators*
+or by *operators*.
+
+**Example:**
+```c
+if (fun_a(param_a, param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The *groups* in the code above are:
+* `(fun_a(param_a, param_b) && ~fun_b(paramc) && fun_c())`
+* `fun_a(param_a, param_b)`
+* `~fun_b(paramc)`
+* `fun_b(paramc)`
+* `fun_c()`
+* `fun_a`
+* `fun_b`
+* `fun_c`
+* `param_a`
+* `param_b`
+* `param_c`
+* `(param_a, param_b)`
+* `(param_c)`
+* `()`
+* `{ do_something(); }`
+* `do_something()`
+* `do_something`
+
+#### Qualifying Groups
+A *qualifying group* is a *group* that suffixes a *group* in order to modify its
+semantics.
+
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The *qualifying groups* in the code above are:
+* `(param_a[0][a + b], param_b)`
+* `(param_c)`
+* `()`
+* `[0]`
+* `[a + b]`
+
+#### Instruction Groups
+An *instruction group* is a *group* that returns no value.
+
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The only *instruction group* in the code above is:
+* `{ do_something(); }`
+
+#### Separator
+A *separator* is a symbol that is put in between *groups* yet does not merge
+the groups it separates.
+
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The *separators* in the code above are:
+* `,`
+* `;`
+
+#### Non-Unary Operator
+An *non-unary operator* is a symbol that is put in between *groups* in infix
+languages in order to merge them into a larger group.
+
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The *non-unary operators* in the code above are:
+* `+`
+* `&&`
+
+#### Unary Operator
+An *operator* is a symbol that prefixes *groups* in infix languages in
+order to affect their value.
+
+**Example:**
+```c
+if (fun_a(param_a[0][a + b], param_b) && ~fun_b(paramc) && fun_c())
+{
+   do_something();
+}
+```
+The only *unary operator* in the code above is:
+* `~`
+
 ## Type conversions
 Never use implicit conversions.
 
