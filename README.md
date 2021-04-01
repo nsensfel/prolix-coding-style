@@ -469,7 +469,7 @@ Note:
   are not attached to their arguments and there is thus a either a space or a
   newline.
 
-#### 2.14. Logical separations in instruction blocks
+#### 2.14. Logical Separations in Instruction Groups
 `(WIP)`
 
 If the language allows separate declaration and definition (e.g. C, Java, but
@@ -480,8 +480,12 @@ No more than one instruction per line.
 Do not declare variables of a different type on the same line (this also
 forbids declaring pointers and non-pointers on the same line).
 
-Separate declarations, assignments, function call, and loop/conditional/jump
-structures with an empty line.
+Separate statements of a different kind by an empty line. For example, put an
+empty line before an assignment if it follows a declaration.
+
+Any statement following a multi-line statement should be preceded by an empty
+line (i.e. keep an empty line after any multi-line statement if it isn't the end
+of the instruction group).
 
 #### 2.15. Compatibility
 The code should be written using ASCII characters. Non-ASCII characters outside
