@@ -174,10 +174,12 @@ tab, or newline.
 * Assume that if a restricting keyword is absent, that is because it could not
   be added.
 
-For example, in Java, every variable should be `final` unless it is modified.
+For example, in Java, every variable should be `final` unless the object it
+refers to (or its value, in the case of a primitive) is changed.
 Thus, upon seeing that a variable is not `final`, one should expect there is at
-least one possible execution that will lead to it being modified.
- 
+least one possible execution that will lead to it changing which object it
+refers to.
+
 #### 2.2. Type Conversions
 Most languages will automatically infer necessary type conversions. This is
 sometimes useful but often dangerous. In order to keep most of the useful
