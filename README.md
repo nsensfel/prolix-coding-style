@@ -22,7 +22,7 @@ or by *operators*.
 ```c
 if (fun_a(param_a, param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The *groups* in the code above are:
@@ -52,7 +52,7 @@ semantics.
 ```c
 if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The *qualifying groups* in the code above are:
@@ -72,7 +72,7 @@ An *instruction group* is a *group* that returns no value.
 ```c
 if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The only *instruction group* in the code above is:
@@ -91,7 +91,7 @@ the groups it separates.
 ```c
 if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The *separators* in the code above are:
@@ -106,7 +106,7 @@ languages in order to merge them into a larger group.
 ```c
 if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The *non-unary operators* in the code above are:
@@ -139,7 +139,7 @@ it closing.
 ```c
 if (fun_a(param_a[0][a + b], param_b) && ~fun_b(param_c) && fun_c())
 {
-   do_something();
+	do_something();
 }
 ```
 The *delimiters* in the code above are:
@@ -195,6 +195,9 @@ should ensure a increment of column. Tabulation or spaces are both acceptable,
 as long as what constitutes a level of indentation is consistent thorough the
 project.
 
+Indentations tabs, if used, should only be present between the start of a line
+and its first non-tab character. Use spaces to align content past that point.
+
 The only way to change the indentation level is to enter a *group* definition or
 leave a *group* definition. These may at most change the indentation level by
 one, and have to decrease the indentation level on exit if they incremented it
@@ -214,31 +217,31 @@ The keywords that precede a group are
 ```c
 void some_function (int a, int b)
 {
-   some_other_function
-   (
-      some_other_function_with_a_particularly_long_name(),
-      a + b,
-      rand() + b
-   );
+	some_other_function
+	(
+		some_other_function_with_a_particularly_long_name(),
+		a + b,
+		rand() + b
+	);
 }
 ```
 * The following is **forbidden**:
 ```c
 void some_function (int a, int b)
 {
-   some_other_function
-   (
-      some_other_function_with_a_particularly_long_name(),
-      a + b, rand() + b
-   );
+	some_other_function
+	(
+		some_other_function_with_a_particularly_long_name(),
+		a + b, rand() + b
+	);
 }
 ```
 * The following is **forbidden**:
 ```c
 void some_function (int a, int b)
 {
-   some_other_function(some_other_function_with_a_particularly_long_name(), a +
-      b, rand() + b);
+	some_other_function(some_other_function_with_a_particularly_long_name(), a +
+		b, rand() + b);
 }
 ```
 
