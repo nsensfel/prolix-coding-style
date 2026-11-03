@@ -523,8 +523,8 @@ There is no spacing between a *member accesses* and its parent *group*.
 
 ### 3. Special Cases
 #### 3.0. Indentation Exceptions
-* If the left side of an assignment cannot fit in the line, it goes to a new
-  line and creates its own incremented indentation level before the *group*
+* If the right side of an assignment cannot fit in the line, it goes to a new
+  line (after the assignment operator) and creates its own incremented indentation level before the *group*
   becomes a multi-line one. If the *group* can fit in that new line, the *group*
   does not become a multi-line *group*.
 * The same rule as above applies to the argument of a `return` statement.
